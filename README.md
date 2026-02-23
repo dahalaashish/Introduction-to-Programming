@@ -3,8 +3,6 @@
 A comprehensive laboratory demonstration of TCP Connect Port Scanning using Python sockets.  
 This project simulates a real-world network reconnaissance scenario where open ports are identified through full TCP three-way handshakes.
 
----
-
 ## Overview
 
 This project demonstartes:
@@ -54,3 +52,11 @@ If connection succeeds → Port is **OPEN**
 If connection fails → Port is **CLOSED / FILTERED**
 
 This is the most reliable but most detectable scanning method.
+
+------
+
+## Quick Start
+
+### 1. clone the repository
+```
+git clone https

@@ -195,6 +195,7 @@ This tool is made strictly for:
 
 Do NOT scan networks or systems without proper permission.  
 Unauthorized scanning may violate cybersecurity laws.
+
 ---
 
 ## Results
@@ -223,7 +224,7 @@ Key Findings:
 
 Aashish Dahal  
 BSc (Hons) Cybersecurity & Ethical Hacking  
-Academic Project – Network Security Module
+Academic Project – Network Security Scanner(TCP Scanner)
 
 ---
 

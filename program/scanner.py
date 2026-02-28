@@ -15,7 +15,8 @@ COMMON_SERVICES = {
     443: "HTTPS"
 }
 
-
+# Attempts to connect to a single port on the target host.
+# Returns a tuple of (port, service_name) if the port is open, or None if it's closed/unreachable.
 def scan_port(target, port):
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -32,6 +33,9 @@ def scan_port(target, port):
     except socket.error:
         return None
 
+
+# Scans a range of ports (inclusive) on the target host.
+# Returns a list of (port, service_name) tuples for all open ports found.
 
 def scan_range(target, start_port, end_port):
     open_ports = []

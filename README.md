@@ -166,6 +166,33 @@ python3 gui.py
 ```
 ---
 
+## Unit Testing
+This project includes a [test.py](./program/test.py/) file to validate core scanner functionality.
+
+Test Cases Implemented:
+- Verifies close port detection
+- Ensures scan range returns a list
+- Confirms graceful handling of Invalid IP addresses
+
+### Sample Output
+
+```
+test_closed_port ... ok
+test_scan_range_returns_list ... ok
+test_invalid_ip ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.45s
+
+OK
+```
+All test passed successfully confirming:
+- stable socket handling
+- proper error management
+- Reliable port scanning logic
+
+---
+  
 ## How It Works
 
 1. User inputs target IP address(Only use personal system or others with proper permission )

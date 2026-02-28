@@ -1,60 +1,48 @@
-# gui.py
+# scanner.py
 
-import tkinter as tk
-from tkinter import messagebox
-from scanner import scan_range
+import socket
 
+# Common port-service mapping
+COMMON_SERVICES = {
+    21: "FTP",
+    22: "SSH",
+    23: "Telnet",
+    25: "SMTP",
+    53: "DNS",
+    80: "HTTP",
+    110: "POP3",
+    143: "IMAP",
+    443: "HTTPS"
+}
 
-def start_scan():
-    target = entry_target.get()
-    start_port = entry_start.get()
-    end_port = entry_end.get()
-
-    if not target or not start_port or not end_port:
-        messagebox.showerror("Error", "All fields are required!")
-        return
-
+# Attempts to connect to a single port on the target host.
+# Returns a tuple of (port, service_name) if the port is open, or None if it's closed/unreachable.
+def scan_port(target, port):
     try:
-        start_port = int(start_port)
-        end_port = int(end_port)
-    except ValueError:
-        messagebox.showerror("Error", "Ports must be numbers!")
-        return
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(0.3)
+        result = sock.connect_ex((target, port))
+        sock.close()
 
-    result_box.delete(1.0, tk.END)
-    result_box.insert(tk.END, f"Scanning {target}...\n\n")
+        if result == 0:
+            service = COMMON_SERVICES.get(port, "Unknown Service")
+            return (port, service)
+        else:
+            return None
 
-    results = scan_range(target, start_port, end_port)
-
-    if results:
-        for port, service in results:
-            result_box.insert(tk.END, f"Port {port} is OPEN ({service})\n")
-    else:
-        result_box.insert(tk.END, "No open ports found.\n")
+    except socket.error:
+        return None
 
 
-def create_gui():
-    global entry_target, entry_start, entry_end, result_box
+# Scans a range of ports (inclusive) on the target host.
+# Returns a list of (port, service_name) tuples for all open ports found.
 
-    window = tk.Tk()
-    window.title("GUI-Based TCP Port Scanner")
-    window.geometry("500x400")
+def scan_range(target, start_port, end_port):
+    open_ports = []
 
-    tk.Label(window, text="Target IP:").pack()
-    entry_target = tk.Entry(window, width=30)
-    entry_target.pack()
+    for port in range(start_port, end_port + 1):
+        result = scan_port(target, port)
+        if result:
+            open_ports.append(result)
 
-    tk.Label(window, text="Start Port:").pack()
-    entry_start = tk.Entry(window, width=10)
-    entry_start.pack()
-
-    tk.Label(window, text="End Port:").pack()
-    entry_end = tk.Entry(window, width=10)
-    entry_end.pack()
-
-    tk.Button(window, text="Start Scan", command=start_scan).pack(pady=10)
-
-    result_box = tk.Text(window, height=15, width=60)
-    result_box.pack()
-
-    window.mainloop()
+    return open_ports
